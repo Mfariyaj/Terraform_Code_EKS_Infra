@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo 'Initializing Terraform with reconfiguration...'
                 withAWS(credentials: 'aws_creds', region: 'us-east-1') {
-                    sh "terraform -chdir=${TERRAFORM_DIR} init -reconfigure"
+                    sh "terraform -chdir=${TERRAFORM_DIR} init"
                 }
             }
         }
