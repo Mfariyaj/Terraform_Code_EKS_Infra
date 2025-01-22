@@ -31,7 +31,7 @@ pipeline {
         stage('Init') {
             steps {
                 echo 'Initializing Terraform...'
-                withAWS(credentials: 'ECR_cred', region: 'us-east-1') {
+                withAWS(credentials: 'aws_creds', region: 'us-east-1') {
                     sh "terraform -chdir=${TERRAFORM_DIR} init"
             }
         }
@@ -39,7 +39,7 @@ pipeline {
         stage('Validate') {
             steps {
                 echo 'Validating Terraform configuration...'
-                withAWS(credentials: 'ECR_cred', region: 'us-east-1') {
+                withAWS(credentials: 'aws_creds', region: 'us-east-1') {
                     sh "terraform -chdir=${TERRAFORM_DIR} validate"
                 }
             }
@@ -47,7 +47,7 @@ pipeline {
         stage('Action') {
             steps {
                 echo "Executing Terraform action: ${params.Terraform_Action}..."
-                withAWS(credentials: 'ECR_cred', region: 'us-east-1') {
+                withAWS(credentials: 'aws_creds', region: 'us-east-1') {
                     script {    
                         switch (params.Terraform_Action) {
                             case 'plan':
