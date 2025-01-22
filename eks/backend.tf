@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket         = "my-terraform-state-bucket-fariyaj"
     region         = "us-east-1"
-    key            = "eks/terraform.tfstate"
+    key            = "End-to-End-Kubernetes-Three-Tier-DevSecOps-Project/Jenkins-Server-TF/terraform.tfstate"
     dynamodb_table = "terraform-locks"
     encrypt        = true
   }
