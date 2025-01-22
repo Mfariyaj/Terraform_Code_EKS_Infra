@@ -35,6 +35,7 @@ pipeline {
                     sh "terraform -chdir=${TERRAFORM_DIR} init"
             }
         }
+        }
         stage('Validate') {
             steps {
                 echo 'Validating Terraform configuration...'
