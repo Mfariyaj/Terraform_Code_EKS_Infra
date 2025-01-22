@@ -30,14 +30,9 @@ pipeline {
         }
         stage('Init') {
             steps {
-                // echo 'Initializing Terraform...'
-                // withAWS(credentials: 'ECR_cred', region: 'us-east-1') {
-                //     sh "terraform -chdir=${TERRAFORM_DIR} init"
-                 try {
-                    sh "TF_LOG=DEBUG terraform -chdir=eks/ init"
-                } catch (Exception e) {
-                    error "Terraform init failed: ${e.message}"
-                }
+                echo 'Initializing Terraform...'
+                withAWS(credentials: 'ECR_cred', region: 'us-east-1') {
+                    sh "terraform -chdir=${TERRAFORM_DIR} init"
             }
         }
         stage('Validate') {
