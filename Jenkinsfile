@@ -1,13 +1,7 @@
 properties([
     parameters([
-        choice(
-            choices: ['dev', 'staging', 'prod'], 
-            name: 'Environment'
-        ),
-        choice(
-            choices: ['plan', 'apply', 'destroy'], 
-            name: 'Terraform_Action'
-        )
+        choice(choices: ['dev', 'staging', 'prod'], name: 'Environment'),
+        choice(choices: ['plan', 'apply', 'destroy'], name: 'Terraform_Action')
     ])
 ])
 
@@ -30,7 +24,7 @@ pipeline {
         }
         stage('Init') {
             steps {
-                echo 'Initializing Terraform...'
+                echo 'Initializing Terraform with reconfiguration...'
                 withAWS(credentials: 'aws_creds', region: 'us-east-1') {
                     sh "terraform -chdir=${TERRAFORM_DIR} init -reconfigure"
                 }
@@ -48,18 +42,15 @@ pipeline {
             steps {
                 echo "Executing Terraform action: ${params.Terraform_Action}..."
                 withAWS(credentials: 'aws_creds', region: 'us-east-1') {
-                    script {    
+                    script {
                         switch (params.Terraform_Action) {
                             case 'plan':
-                                echo "Running terraform plan for ${params.Environment}..."
                                 sh "terraform -chdir=${TERRAFORM_DIR} plan -var-file=${params.Environment}.tfvars"
                                 break
                             case 'apply':
-                                echo "Running terraform apply for ${params.Environment}..."
                                 sh "terraform -chdir=${TERRAFORM_DIR} apply -var-file=${params.Environment}.tfvars -auto-approve"
                                 break
                             case 'destroy':
-                                echo "Running terraform destroy for ${params.Environment}..."
                                 sh "terraform -chdir=${TERRAFORM_DIR} destroy -var-file=${params.Environment}.tfvars -auto-approve"
                                 break
                             default:
