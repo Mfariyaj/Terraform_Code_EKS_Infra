@@ -33,8 +33,8 @@ pipeline {
                 echo 'Initializing Terraform...'
                 withAWS(credentials: 'aws_creds', region: 'us-east-1') {
                     sh "terraform -chdir=${TERRAFORM_DIR} init -reconfigure"
+                }
             }
-        }
         }
         stage('Validate') {
             steps {
@@ -51,12 +51,15 @@ pipeline {
                     script {    
                         switch (params.Terraform_Action) {
                             case 'plan':
+                                echo "Running terraform plan for ${params.Environment}..."
                                 sh "terraform -chdir=${TERRAFORM_DIR} plan -var-file=${params.Environment}.tfvars"
                                 break
                             case 'apply':
+                                echo "Running terraform apply for ${params.Environment}..."
                                 sh "terraform -chdir=${TERRAFORM_DIR} apply -var-file=${params.Environment}.tfvars -auto-approve"
                                 break
                             case 'destroy':
+                                echo "Running terraform destroy for ${params.Environment}..."
                                 sh "terraform -chdir=${TERRAFORM_DIR} destroy -var-file=${params.Environment}.tfvars -auto-approve"
                                 break
                             default:
