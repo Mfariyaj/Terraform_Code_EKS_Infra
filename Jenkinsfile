@@ -45,13 +45,13 @@ pipeline {
                     script {
                         switch (params.Terraform_Action) {
                             case 'plan':
-                                sh "terraform -chdir=${TERRAFORM_DIR} plan -var-file=${params.Environment}.tfvars"
+                                sh "terraform -chdir=${TERRAFORM_DIR} plan"
                                 break
                             case 'apply':
-                                sh "terraform -chdir=${TERRAFORM_DIR} apply -var-file=${params.Environment}.tfvars -auto-approve"
+                                sh "terraform -chdir=${TERRAFORM_DIR} apply -auto-approve"
                                 break
                             case 'destroy':
-                                sh "terraform -chdir=${TERRAFORM_DIR} destroy -var-file=${params.Environment}.tfvars -auto-approve"
+                                sh "terraform -chdir=${TERRAFORM_DIR} destroy -auto-approve"
                                 break
                             default:
                                 error "Invalid value for Terraform_Action: ${params.Terraform_Action}"
